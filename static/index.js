@@ -10,28 +10,27 @@ setup();
 
 function draw(planets_data) {
   drawSun();
-
+  
   for (var i=0; i<planets_data.length; i++) {
     drawPlanet(planets_data[i].lat,planets_data[i].long,planets_data[i].rad, planets_data[i].name);
   }
-
+  
 }
 
 function drawSun() {
-  ctx.beginPath();
-  ctx.font = '36px sans-serif';
-  ctx.fillText("🌞", 0, 0);
-  ctx.closePath();
-  ctx.fill();
+  img = document.getElementById('Sun');
+  ctx.drawImage(img, 0, 0, 40, 40);
 }
 
 function drawPlanet(lat, long, rad, name) {
+  var x = rad*Math.cos(long)*Math.cos(lat) * 20
+  var y = -(rad*Math.cos(lat)*Math.sin(long) * 20)
+  img = document.getElementById(name);
+  ctx.drawImage(img, x, y, 30, 30);
   ctx.beginPath();
-  ctx.font = '14px sans-serif';
-  var x = rad*Math.cos(long)*Math.cos(lat)
-  var y = rad*Math.cos(lat)*Math.sin(long)
+  ctx.font = '12px sans-serif';
   ctx.fillStyle = '#FFFFFF';
-  ctx.fillText("⭐️" + name, x * 24, -y * 24);
+  ctx.fillText(name, x, y);
   ctx.closePath();
   ctx.fill();
 }

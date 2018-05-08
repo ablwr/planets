@@ -14,7 +14,7 @@ function draw(planets_data) {
   for (var i=0; i<planets_data.length; i++) {
     drawPlanet(planets_data[i].lat,planets_data[i].long,planets_data[i].rad, planets_data[i].name);
   }
-  
+
 }
 
 function drawSun() {
@@ -23,10 +23,18 @@ function drawSun() {
 }
 
 function drawPlanet(lat, long, rad, name) {
-  var x = rad*Math.cos(long)*Math.cos(lat) * 20
-  var y = -(rad*Math.cos(lat)*Math.sin(long) * 20)
+  if (name == "Neptune" || name == "Uranus") {
+    var x = rad*Math.cos(long)*Math.cos(lat) * 11
+    var y = -(rad*Math.cos(lat)*Math.sin(long) * 11)
+  } else if (name == "Jupiter") {
+    var x = rad*Math.cos(long)*Math.cos(lat) * 40
+    var y = -(rad*Math.cos(lat)*Math.sin(long) * 40)    
+  } else {
+    var x = rad*Math.cos(long)*Math.cos(lat) * 100
+    var y = -(rad*Math.cos(lat)*Math.sin(long) * 100)
+  }
   img = document.getElementById(name);
-  ctx.drawImage(img, x, y, 30, 30);
+  ctx.drawImage(img, x, y, 26, 26);
   ctx.beginPath();
   ctx.font = '12px sans-serif';
   ctx.fillStyle = '#FFFFFF';

@@ -31,7 +31,6 @@ function drawPlanet(lat, long, rad, name) {
   var x = rad*Math.cos(long)*Math.cos(lat)
   var y = rad*Math.cos(lat)*Math.sin(long)
   ctx.fillStyle = '#FFFFFF';
-  console.log("x is " + x + ", y is " + y)
   ctx.fillText("⭐️" + name, x * 24, -y * 24);
   ctx.closePath();
   ctx.fill();

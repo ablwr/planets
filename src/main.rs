@@ -20,12 +20,16 @@ js_serializable!(Planette);
 
 fn main() {
 
+
+    let time = stdweb::web::Date::now();
+    let current_julian_day: f64 = ( time / 86400000.0 ) + 2440587.5;
+
     let day_of_month = time::DayOfMonth{
-        day      :  4,
-        hr       :  16,
-        min      :  45,
+        day      :  7,
+        hr       :  18,
+        min      :  05,
         sec      :  0.0,
-        time_zone: -4.0};
+        time_zone: 0.0};
 
     let date = time::Date{
         year       : 2018,
@@ -57,16 +61,17 @@ fn main() {
         return Planette{long: long, lat: lat, rad: rad, name: name.to_string()};
     }
 
+
+
     let mut pdata: Vec<Planette> = vec![];
 
     for p in planets.iter() {
-        pdata.push( planet_stats(p, julian_day));
+        pdata.push( planet_stats(p, current_julian_day));
     }
 
     initialize();
     js! {
         var planets_data = @{&pdata};
-        console.log(planets_data);
         draw(planets_data);
     }
     event_loop();

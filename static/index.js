@@ -10,16 +10,14 @@ setup();
 
 function draw(planets_data) {
   drawSun();
-  
   for (var i=0; i<planets_data.length; i++) {
     drawPlanet(planets_data[i].lat,planets_data[i].long,planets_data[i].rad, planets_data[i].name);
   }
-
 }
 
 function drawSun() {
   img = document.getElementById('Sun');
-  ctx.drawImage(img, 0, 0, 40, 40);
+  ctx.drawImage(img, 0, 0, 36, 36);
 }
 
 function drawPlanet(lat, long, rad, name) {
@@ -34,8 +32,8 @@ function drawPlanet(lat, long, rad, name) {
     var y = -(rad*Math.cos(lat)*Math.sin(long) * 100)
   }
   img = document.getElementById(name);
-  ctx.drawImage(img, x, y, 26, 26);
   ctx.beginPath();
+  ctx.drawImage(img, x, y, 26, 26);
   ctx.font = '12px sans-serif';
   ctx.fillStyle = '#FFFFFF';
   ctx.fillText(name, x, y);

@@ -5,8 +5,10 @@ extern crate serde_derive;
 extern crate stdweb;
 extern crate astro;
 
-use astro::*;
+use astro::planet::*;
 use stdweb::*;
+use stdweb::web::*;
+use stdweb::unstable::TryInto;
 
 #[derive(Serialize, Deserialize)]
 struct Planette {
@@ -18,61 +20,62 @@ struct Planette {
 
 js_serializable!(Planette);
 
+// the finest cargo culting
+macro_rules! enclose {
+    ( ($( $x:ident ),*) $y:expr ) => {
+        {
+            $(let $x = $x.clone();)*
+            $y
+        }
+    };
+}
+
 fn main() {
+    
+    initialize();
 
-
-    let time = stdweb::web::Date::now();
+    let time = Date::now();
     let current_julian_day: f64 = ( time / 86400000.0 ) + 2440587.5;
 
-    let day_of_month = time::DayOfMonth{
-        day      :  7,
-        hr       :  18,
-        min      :  05,
-        sec      :  0.0,
-        time_zone: 0.0};
+    let planets = [&Planet::Mercury, &Planet::Venus, &Planet::Earth, &Planet::Mars,
+                   &Planet::Jupiter, &Planet::Saturn, &Planet::Uranus, &Planet::Neptune];
 
-    let date = time::Date{
-        year       : 2018,
-        month      : 5,
-        decimal_day: time::decimal_day(&day_of_month),
-        cal_type   : time::CalType::Gregorian};
-
-    let julian_day = time::julian_day(&date);
-
-    let planets = [&planet::Planet::Mercury, &planet::Planet::Venus, 
-                &planet::Planet::Earth, &planet::Planet::Mars,
-                &planet::Planet::Jupiter, &planet::Planet::Saturn,
-                &planet::Planet::Uranus, &planet::Planet::Neptune];
-
-    fn planet_stats(planet: &planet::Planet, jd: f64) -> Planette {    
-        let (long, lat, rad) = planet::heliocent_coords(planet, jd);
+    fn planet_stats(planet: &Planet, jd: f64) -> Planette {    
+        let (long, lat, rad) = astro::planet::heliocent_coords(planet, jd);
 
         let name = match planet {
-            planet::Planet::Mercury => "Mercury",
-            planet::Planet::Venus => "Venus",
-            planet::Planet::Earth => "Earth",
-            planet::Planet::Mars => "Mars",
-            planet::Planet::Jupiter => "Jupiter",
-            planet::Planet::Saturn => "Saturn",
-            planet::Planet::Uranus => "Uranus",
-            planet::Planet::Neptune => "Neptune",
+            Planet::Mercury => "Mercury",
+            Planet::Venus => "Venus",
+            Planet::Earth => "Earth",
+            Planet::Mars => "Mars",
+            Planet::Jupiter => "Jupiter",
+            Planet::Saturn => "Saturn",
+            Planet::Uranus => "Uranus",
+            Planet::Neptune => "Neptune",
         };
-
         return Planette{long: long, lat: lat, rad: rad, name: name.to_string()};
     }
 
+    let date_selector: html_element::InputElement = document().query_selector( "#date" ).unwrap().unwrap().try_into().unwrap();
+    date_selector.add_event_listener( enclose!( (date_selector) move |_: event::InputEvent| {
+        
+        let chosen_date: f64 = js! {
+            var d1 = new Date(@{&date_selector.raw_value()});
+            var d2 = Date.parse(d1.toString());
+            var d3 = (d2/86400000.0)+2440587.5;
+            return parseFloat(d3);
+        }.try_into().expect("no integers, dude");
 
+        let mut new_pdata: Vec<Planette> = vec![];
+        for p in planets.iter() {
+            &new_pdata.push( planet_stats(p, chosen_date as f64));
+        }
 
-    let mut pdata: Vec<Planette> = vec![];
+        js! {
+            setup();
+            draw(@{&new_pdata});
+        }  
+    }));
 
-    for p in planets.iter() {
-        pdata.push( planet_stats(p, current_julian_day));
-    }
-
-    initialize();
-    js! {
-        var planets_data = @{&pdata};
-        draw(planets_data);
-    }
     event_loop();
 }

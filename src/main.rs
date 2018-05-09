@@ -34,11 +34,11 @@ fn main() {
     
     initialize();
 
-    let planets = [&Planet::Mercury, &Planet::Venus, &Planet::Earth, &Planet::Mars,
+    let planets = [&Planet::Mercury, &Planet::Venus, &Planet::Mars,
                    &Planet::Jupiter, &Planet::Saturn, &Planet::Uranus, &Planet::Neptune];
 
     fn planet_stats(planet: &Planet, jd: f64) -> Planette {    
-        let (long, lat, rad) = astro::planet::heliocent_coords(planet, jd);
+        let (points, rad) = astro::planet::geocent_apprnt_ecl_coords(planet, jd);
 
         let name = match planet {
             Planet::Mercury => "Mercury",
@@ -50,7 +50,7 @@ fn main() {
             Planet::Uranus => "Uranus",
             Planet::Neptune => "Neptune",
         };
-        return Planette{long: long, lat: lat, rad: rad, name: name.to_string()};
+        return Planette{long: points.long, lat: points.lat, rad: rad, name: name.to_string()};
     }
 
     let time = Date::now();

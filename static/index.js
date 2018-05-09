@@ -9,14 +9,14 @@ function setup(){
 setup();
 
 function draw(planets_data) {
-  drawSun();
+  drawEarth();
   for (var i=0; i<planets_data.length; i++) {
     drawPlanet(planets_data[i].lat,planets_data[i].long,planets_data[i].rad, planets_data[i].name);
   }
 }
 
-function drawSun() {
-  img = document.getElementById('Sun');
+function drawEarth() {
+  img = document.getElementById('Earth');
   ctx.drawImage(img, 0, 0, 36, 36);
 }
 

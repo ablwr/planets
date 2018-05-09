@@ -34,9 +34,6 @@ fn main() {
     
     initialize();
 
-    let time = Date::now();
-    let current_julian_day: f64 = ( time / 86400000.0 ) + 2440587.5;
-
     let planets = [&Planet::Mercury, &Planet::Venus, &Planet::Earth, &Planet::Mars,
                    &Planet::Jupiter, &Planet::Saturn, &Planet::Uranus, &Planet::Neptune];
 
@@ -54,6 +51,17 @@ fn main() {
             Planet::Neptune => "Neptune",
         };
         return Planette{long: long, lat: lat, rad: rad, name: name.to_string()};
+    }
+
+    let time = Date::now();
+    let current_julian_day: f64 = ( time / 86400000.0 ) + 2440587.5;
+    let mut pdata: Vec<Planette> = vec![];
+    for p in planets.iter() {
+        &pdata.push( planet_stats(p, current_julian_day as f64));
+    }
+    js! {
+        setup();
+        draw(@{&pdata});
     }
 
     let date_selector: html_element::InputElement = document().query_selector( "#date" ).unwrap().unwrap().try_into().unwrap();

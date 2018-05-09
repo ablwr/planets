@@ -24,6 +24,9 @@ function drawPlanet(lat, long, rad, name) {
   if (name == "Neptune" || name == "Uranus") {
     var x = rad*Math.cos(long)*Math.cos(lat) * 11
     var y = -(rad*Math.cos(lat)*Math.sin(long) * 11)
+  } else if (name == "Saturn") {
+    var x = rad*Math.cos(long)*Math.cos(lat) * 25
+    var y = -(rad*Math.cos(lat)*Math.sin(long) * 25)    
   } else if (name == "Jupiter") {
     var x = rad*Math.cos(long)*Math.cos(lat) * 40
     var y = -(rad*Math.cos(lat)*Math.sin(long) * 40)    

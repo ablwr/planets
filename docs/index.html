@@ -11,8 +11,19 @@
       position: absolute;
       background-color:rgb(1, 10, 33);
     }
+    #date {
+      font-size: 24px;
+    }
+    #relation {
+      font-size: 28px;
+    }
+    label {
+      color: white;
+      font-style: oblique;
+      font-size: 32px;
+      display: block;
+    }
     img {
-      z-index: -1;
       display: none;
     }
     #canvas {
@@ -22,6 +33,7 @@
     </style>
   </head>
   <body>
+    <label for="date">Date: </label>
     <input id="date" type="date">
     <canvas id="canvas"></canvas>
     <img src="Sun.jpg" id="Sun" alt="Sun">

@@ -16,7 +16,7 @@ function draw(planets_data) {
 }
 
 function drawSun() {
-  img = document.getElementById('Sun');
+  var img = document.getElementById('Sun');
   ctx.drawImage(img, 0, 0, 36, 36);
 }
 
@@ -34,7 +34,7 @@ function drawPlanet(lat, long, rad, name) {
     var x = rad*Math.cos(long)*Math.cos(lat) * 100
     var y = -(rad*Math.cos(lat)*Math.sin(long) * 100)
   }
-  img = document.getElementById(name);
+  var img = document.getElementById(name);
   ctx.beginPath();
   ctx.drawImage(img, x, y, 26, 26);
   ctx.font = '12px sans-serif';

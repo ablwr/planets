@@ -20,7 +20,7 @@ struct Planette {
 
 js_serializable!(Planette);
 
-// the finest cargo culting
+// pulled from stdweb examples
 macro_rules! enclose {
     ( ($( $x:ident ),*) $y:expr ) => {
         {

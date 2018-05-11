@@ -111,7 +111,7 @@ fn main() {
             view_selector.set_raw_value("Sun");
             earth_view = false;
         } 
-
+        // TODO: Earth button resets time, it should stick with the chosen time
         draw_planets(planets, date, earth_view);
     }));
 

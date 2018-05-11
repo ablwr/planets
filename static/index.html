@@ -14,14 +14,21 @@
     #date {
       font-size: 24px;
     }
-    #relation {
-      font-size: 28px;
+    #view {
+      font-size: 24px;
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+    .opts {
+      padding-top: 10px;
     }
     label {
       color: white;
       font-style: oblique;
       font-size: 32px;
       display: block;
+      float: left;
+      padding-right: 14px;
     }
     img {
       display: none;
@@ -33,10 +40,14 @@
     </style>
   </head>
   <body>
+    <div class="opts">
     <label for="date">Date</label>
     <input id="date" type="date">
-    <label for="relation">View</label>
-    <input id="relation" type="button" value="Sun">
+    </div>
+    <div class="opts">
+    <label for="view">Perspective</label>
+    <input id="view" type="button" value="Sun">
+    </div>
     <canvas id="canvas"></canvas>
     <img src="Sun.jpg" id="Sun" alt="Sun">
     <img src="Mercury.jpg" id="Mercury" alt="Mercury">

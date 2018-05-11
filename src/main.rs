@@ -77,10 +77,10 @@ fn main() {
 
     // initial setup
     let time = Date::now();
-    let date: f64 = ( time / 86400000.0 ) + 2440587.5;
+    let default_date: f64 = ( time / 86400000.0 ) + 2440587.5;
     let mut pdata: Vec<Planette> = vec![];
     for p in planets.iter() {
-        &pdata.push( planet_stats(p, date, earth_view));
+        &pdata.push( planet_stats(p, default_date, earth_view));
     }
     js! {
         setup();
@@ -102,7 +102,7 @@ fn main() {
     }));
 
     let view_selector: html_element::InputElement = document().query_selector( "#view" ).unwrap().unwrap().try_into().unwrap();
-    view_selector.add_event_listener( enclose!( (view_selector, date) move |_: event::ClickEvent| {
+    view_selector.add_event_listener( enclose!( (view_selector) move |_: event::ClickEvent| {
         
         if earth_view == false {
             view_selector.set_raw_value("Earth");
@@ -112,6 +112,14 @@ fn main() {
             earth_view = false;
         } 
         // TODO: Earth button resets time, it should stick with the chosen time
+
+        let date: f64 = js! {
+            var d1 = new Date(@{&date_selector.raw_value()});
+            var d2 = Date.parse(d1.toString());
+            var d3 = (d2/86400000.0)+2440587.5;
+            return parseFloat(d3);
+        }.try_into().expect("no integers, dude");
+
         draw_planets(planets, date, earth_view);
     }));
 
